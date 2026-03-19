@@ -1,0 +1,7 @@
+# Config files
+.syncxrc
+
+# System/Editor files
+.DS_Store
+*.swp
+*.log
