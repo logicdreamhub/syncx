@@ -40,15 +40,25 @@ install_tool() {
 
 # Function to setup configuration
 setup_config() {
-    echo "Configuration Setup: Selecting source and destination folders..."
-    
+    echo "Configuration Setup: Please enter the full paths for your folders."
+    echo ""
+
     # Select Source Folder
-    SOURCE=$(zenity --file-selection --directory --title="Select Source Folder (Your Projects)")
-    if [ -z "$SOURCE" ]; then echo "Setup cancelled."; exit 1; fi
+    while true; do
+        read -p "Enter Source Folder Path (e.g., /home/user/Projects): " SOURCE
+        # Expand ~ if used
+        SOURCE="${SOURCE/#\~/$HOME}"
+        if [ -d "$SOURCE" ]; then
+            break
+        else
+            echo "Error: Directory '$SOURCE' does not exist. Please try again."
+        fi
+    done
     
     # Select Destination Folder
-    DESTINATION=$(zenity --file-selection --directory --title="Select Destination Folder (Your Backup Drive)")
-    if [ -z "$DESTINATION" ]; then echo "Setup cancelled."; exit 1; fi
+    read -p "Enter Destination Folder Path (e.g., /media/user/Backup/projects): " DESTINATION
+    # Expand ~ if used
+    DESTINATION="${DESTINATION/#\~/$HOME}"
 
     # Ensure paths end with a slash for rsync
     [[ "$SOURCE" != */ ]] && SOURCE="$SOURCE/"
