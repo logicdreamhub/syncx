@@ -105,12 +105,12 @@ echo ""
 
 # 4. Check if destination drive is mounted/accessible
 if [ ! -d "$DESTINATION" ]; then
-    zenity --error --text="Backup failed: Destination folder not found at:\n$DESTINATION\n\nPlease ensure your drive is connected."
+    zenity --error --title="SyncX Error" --width=400 --text="Backup failed: Destination folder not found at:\n\n$DESTINATION\n\nPlease ensure your drive is connected."
     exit 1
 fi
 
 # 5. Confirm before sync
-zenity --question --text="Start syncing from\n$SOURCE\nto\n$DESTINATION?" || exit 0
+zenity --question --title="Confirm Sync" --width=400 --text="Start syncing from\n\n$SOURCE\nto\n$DESTINATION?" || exit 0
 
 # 6. Run the sync with progress bar
 rsync -av --delete --info=progress2 "$SOURCE" "$DESTINATION" | \
@@ -121,6 +121,7 @@ zenity --progress \
   --title="Syncing Projects" \
   --text="Updating your backup..." \
   --percentage=0 \
+  --width=450 \
   --auto-close
 
 # Capture exit statuses
@@ -134,6 +135,6 @@ elif [ $RSYNC_STATUS -eq 0 ]; then
     notify-send "Sync Complete" "Your files are safely backed up."
     echo "Sync Complete!"
 else
-    zenity --error --text="Sync encountered an error (Rsync Code: $RSYNC_STATUS)."
+    zenity --error --title="SyncX Error" --width=400 --text="Sync encountered an error (Rsync Code: $RSYNC_STATUS)."
     echo "Sync failed with error code $RSYNC_STATUS."
 fi
