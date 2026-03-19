@@ -16,7 +16,7 @@ To install SyncX to your system, follow these steps:
 
 1.  **Clone the Repository** (or download the script):
     ```bash
-    git clone https://github.com/your-username/syncx.git
+    git clone https://github.com/logicdreamhub/syncx.git
     cd syncx
     ```
 
