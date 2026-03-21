@@ -125,13 +125,14 @@ zenity --progress \
   --auto-close
 
 # Capture exit statuses
-RSYNC_STATUS=${PIPESTATUS[0]}
-ZENITY_STATUS=${PIPESTATUS[4]}
+PIPE_STATUSES=("${PIPESTATUS[@]}")
+RSYNC_STATUS=${PIPE_STATUSES[0]}
+ZENITY_STATUS=${PIPE_STATUSES[4]}
 
 # 7. Final Notification
-if [ $ZENITY_STATUS -eq 1 ]; then
+if [ "$ZENITY_STATUS" = "1" ]; then
     notify-send "Sync Cancelled" "The backup process was stopped by the user."
-elif [ $RSYNC_STATUS -eq 0 ]; then
+elif [ "$RSYNC_STATUS" = "0" ]; then
     notify-send "Sync Complete" "Your files are safely backed up."
     echo "Sync Complete!"
 else
